@@ -15,7 +15,7 @@ class MainDrawer extends StatelessWidget {
                 CircleAvatar(child: Icon(Icons.restaurant),),
                 
                 SizedBox(height: 15,),
-                Text('Cooking Up!',style: TextStyle(color: Colors.white,
+                Text('Shop App!',style: TextStyle(color: Colors.white,
                 fontFamily: 'RobotoCondensed',fontSize: 26
                 ),)
               ],
@@ -43,6 +43,14 @@ class MainDrawer extends StatelessWidget {
             title: Text('Manage Products'),
             onTap: (){
               Navigator.of(context).pushReplacementNamed(UserProductScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Log out'),
+            onTap: (){
+
             },
           )
         ],

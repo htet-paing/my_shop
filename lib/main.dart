@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_shop/root_page.dart';
 import 'package:my_shop/screens/cart_screen.dart';
 import 'package:my_shop/screens/edit_product_screen.dart';
 import 'package:my_shop/screens/order_screen.dart';
@@ -6,9 +7,9 @@ import 'package:my_shop/screens/user_product_screen.dart';
 import './providers/product_provider.dart';
 import './screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
-import './screens/product_overview_screen.dart';
 import 'providers/cart.dart';
 import 'providers/orders.dart';
+import 'package:my_shop/auth/authentication.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.deepOrange,
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/' : (ctx) => ProductsOverviewScreen(),
+          '/' : (ctx) => RootPage(auth: Auth()),
           ProductDetailScreen.routeName : (ctx) => ProductDetailScreen(),
           CartScreen.routeName : (ctx) => CartScreen(),
           OrderScreen.routeName : (ctx) => OrderScreen(),

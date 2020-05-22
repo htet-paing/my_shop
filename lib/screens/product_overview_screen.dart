@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_shop/auth/authentication.dart';
 import 'package:my_shop/providers/cart.dart';
 import 'package:my_shop/providers/product_provider.dart';
 import 'package:my_shop/widgets/badge.dart';
@@ -10,10 +11,17 @@ import 'cart_screen.dart';
 
 enum FilterOptions{
   Favourites,
-  All
+  All,
+  Logout,
 }
 
 class ProductsOverviewScreen extends StatefulWidget {
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+  final String userId;
+
+  ProductsOverviewScreen({this.auth, this.logoutCallback, this.userId});
+
   @override
   _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
 }
@@ -46,6 +54,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     super.didChangeDependencies();
   }
 
+  signOut() async {
+    try {
+      await widget.auth.signOut();
+      widget.logoutCallback();
+    }catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +74,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               setState(() {
                 if(selectedValue == FilterOptions.Favourites){
                 _showFavouriteOnly = true;
-              }else {
+              }else if (selectedValue == FilterOptions.All) {
                 _showFavouriteOnly = false;
+              }else {
+                signOut();
               }
               });      
             },
@@ -66,6 +85,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             itemBuilder: (_) => [
             PopupMenuItem(child: Text('Only Favourites'), value: FilterOptions.Favourites,),
             PopupMenuItem(child: Text('Show All'), value: FilterOptions.All,),
+            PopupMenuItem(child: Text('Log out'),value: FilterOptions.Logout,)
             ],
           ),
           Consumer<Cart>(
@@ -82,10 +102,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 Navigator.of(context).pushNamed(CartScreen.routeName);
               },
             ),
-          )
-          
-          
-          
+          ),
         ],
       ),
       body:  _isLoading ? Center(child: CircularProgressIndicator(),) : ListView(
